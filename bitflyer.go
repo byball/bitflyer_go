@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+
 	// "os"
 	// "io/ioutil"
 	"log"
@@ -21,7 +22,7 @@ type TickerResponse struct {
 
 // getLtp はAPIからLTPを取得します。
 func getLtp() (float64, error) {
-	resp, err := http.Get("https://api.bitflyer.com/v1/ticker")
+	resp, err := http.Get("https://api.bitflyer.com/v1/ticker?product_code=FX_BTC_JPY")
 	if err != nil {
 		return 0, err
 	}
@@ -69,7 +70,7 @@ func main() {
 	}
 
 	// 10秒ごとにLTPを取得してデータベースに保存します。
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(30 * time.Second)
 	for range ticker.C {
 		ltp, err := getLtp()
 		if err != nil {
